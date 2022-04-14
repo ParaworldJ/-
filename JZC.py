@@ -89,8 +89,10 @@ class Product:
         if self.costday < self.leftdate:
             return self.costday
         else:
-            return self.leftdate
-    
+            if self.leftdate >=0:
+                return self.leftdate    
+            else:
+                return 0
 
 ###Ver1.0
     # def __str__(self):
@@ -118,14 +120,14 @@ for line in lines:
 # totalday = totalday - (Tday - mindate).days
 for sd in sorted(ProductList,key = attrgetter('saveday','leftdate') ):
     if (sd.leftdate - totalday) > 0:    #判断剩余可用的天数大于度过的天数，说明这东西还能用
-        if sd.saveday - totalday  > sd.min: #判断可用的情况下，该物品的保质期和可用天数哪个多一点（预测天数增加，保质期天数会缩短甚至小于可消耗的天数）
+        if sd.leftdate - totalday  >= sd.min: #判断可用的情况下，该物品的保质期和可用天数哪个多一点（预测天数增加，保质期天数会缩短甚至小于可消耗的天数）
             totalday = totalday + sd.min
         else:
             totalday = sd.leftdate
             print(f'{sd.name}会浪费一些')
         # print(sd.name , sd.costday , sd.min ,totalday)
     else:
-        print(f'{sd.name}会坏，{sd.min}')
+        print(f'{sd.name}会坏')
     print(sd)
 print(totalday)
 
